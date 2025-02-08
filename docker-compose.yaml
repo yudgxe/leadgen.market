@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    restart: unless-stopped
+    build: ./
+    depends_on:
+      - redis
+    ports: 
+      - 8090:8090
+    networks:
+      - backend
+  
+  redis:
+    restart: unless-stopped
+    image: redis:6.2-alpine
+    environment:
+      REDIS_PASSWORD: "redis"
+    volumes:
+      - redis_data:/var/lib/redis/data
+    ports:
+     - "6379:6379"
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  redis_data:
